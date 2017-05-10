@@ -9,26 +9,33 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 public class DatabaseConnection {
+	private static Connection connection = null;
+
+	private DatabaseConnection() {
+
+	}
+
 	public static Connection getConnection() throws ClassNotFoundException {
-		Connection connection = null;
-		try {
-			System.out.println("inizio connessione");
-			// the sql server driver string
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+		if (connection == null) {
+			try {
+				System.out.println("inizio connessione");
+				// the sql server driver string
+				Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
-			// the sql server url
-			String url = "jdbc:sqlserver://PC1964:1433;DatabaseName=project_work";
+				// the sql server url
+				String url = "jdbc:sqlserver://PC1964:1433;DatabaseName=project_work";
 
-			// get the sql server database connection
-			connection = DriverManager.getConnection(url, "sa", "qwerty1234");
+				// get the sql server database connection
+				connection = DriverManager.getConnection(url, "sa", "qwerty1234");
 
-			// now do whatever you want to do with the connection
-			// ...
-			System.out.println("fine connessione");
+				// now do whatever you want to do with the connection
+				// ...
+				System.out.println("fine connessione");
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.exit(2);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.exit(2);
+			}
 		}
 		return connection;
 	}
