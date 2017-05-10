@@ -4,19 +4,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
 public class DatabaseConnection {
-	private static Connection connection = null;
+	private static Connection connection;
 
 	private DatabaseConnection() {
 
 	}
 
-	public static Connection getConnection() throws ClassNotFoundException {
-		if (connection == null) {
+	public static Connection getConnection() throws ClassNotFoundException, SQLException {
+		
+		if(connection == null){
 			try {
 				System.out.println("inizio connessione");
 				// the sql server driver string
@@ -34,7 +31,12 @@ public class DatabaseConnection {
 
 			} catch (SQLException e) {
 				e.printStackTrace();
+				System.out.println("Eccezione in getConnection");
 				System.exit(2);
+			}
+		}else{
+			if(connection.isClosed()){
+				System.out.println("Connessione interrotta");
 			}
 		}
 		return connection;
